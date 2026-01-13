@@ -1,5 +1,5 @@
 #Maven
-FROM maven:3.9.9-amazoncorretto-17-al2023 AS build
+FROM maven:3.9.12-amazoncorretto-17-debian-trixie AS build
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
