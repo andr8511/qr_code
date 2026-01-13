@@ -5,6 +5,7 @@ COPY pom.xml .
 COPY src ./src
 RUN mvn clean package -DskipTest
 
+
 #JDK
 FROM openjdk:17-slim-bullseye
 WORKDIR /app
