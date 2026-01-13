@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>QR-коды сгенерированы</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .success-box {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(40, 167, 69, 0.3);
+        }
+        .download-btn {
+            background: white;
+            color: #28a745;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1.2em;
+            transition: all 0.3s;
+        }
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255,255,255,0.3);
+        }
+    </style>
+</head>
+<body>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="success-box">
+                <h1><i class="bi bi-check-circle"></i> Готово!</h1>
+                <p class="lead mt-3">QR-коды успешно сгенерированы</p>
+                <p>Ваш PDF файл готов к скачиванию.</p>
+
+                <div class="mt-4">
+                    <a th:href="@{'/download?filename=' + ${filename}}"
+                       th:download="${filename}"
+                       class="download-btn">
+                        <i class="bi bi-download"></i> Скачать PDF
+                    </a>
+                </div>
+
+                <div class="mt-5">
+                    <a href="/" class="btn btn-outline-light me-2">
+                        <i class="bi bi-arrow-left"></i> Создать новые
+                    </a>
+                    <a th:href="@{/preview(start=${start}, end=${end})}"
+                       class="btn btn-light">
+                        <i class="bi bi-eye"></i> Предпросмотр
+                    </a>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <small class="text-muted">
+                    Файл будет автоматически скачан. Если загрузка не началась,
+                    нажмите на ссылку правой кнопкой и выберите "Сохранить ссылку как..."
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+<script>
+    setTimeout(function() {
+        const downloadLink = document.querySelector('.download-btn');
+        if (downloadLink) {
+            downloadLink.click();
+        }
+    }, 1000);
+</script>
+</body>
+</html>

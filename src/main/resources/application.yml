@@ -1,0 +1,18 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: QR_CODE_Generate
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+
+app:
+  qr:
+    max-batch-size: 1000  # Максимальное количество QR-кодов за раз
+    default-size: 150     # Размер по умолчанию в пикселях

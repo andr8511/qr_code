@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Предпросмотр QR-кодов</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .qr-grid {
+            display: grid;
+            gap: 2px;
+            padding: 2px;
+        }
+        .qr-item {
+            text-align: center;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .qr-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .qr-image {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        .qr-number {
+            font-weight: bold;
+            color: #6c63ff;
+            font-size: 1.1em;
+        }
+        .stats {
+            background: linear-gradient(135deg, #6c63ff 0%, #4a44c6 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .btn-download {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-weight: 600;
+            color: white;
+        }
+        .btn-back {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-weight: 600;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid py-4">
+
+    <div class="row justify-content-center mb-4">
+        <div class="col-lg-10">
+            <div class="stats">
+                <div class="row text-center">
+                    <div class="col-md-4">
+                        <h4><i class="bi bi-123"></i> Диапазон</h4>
+                        <h3 th:text="${start} + ' - ' + ${end}">1 - 250</h3>
+                    </div>
+                    <div class="col-md-4">
+                        <h4><i class="bi bi-qr-code"></i> Всего QR-кодов</h4>
+                        <h3 th:text="${total}">250</h3>
+                    </div>
+                    <div class="col-md-4">
+                        <h4><i class="bi bi-grid-3x3-gap"></i> Колонок</h4>
+                        <h3 th:text="${columns}">6</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-4">
+        <div class="col-lg-10 text-center">
+            <a th:href="@{/download-pdf(start=${start}, end=${end})}"
+               class="btn btn-download me-3">
+                <i class="bi bi-download"></i> Скачать PDF
+            </a>
+            <a href="/" class="btn btn-back">
+                <i class="bi bi-arrow-left"></i> Новый набор
+            </a>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="qr-grid"
+                 th:style="'grid-template-columns: repeat(' + ${columns} + ', 1fr);'">
+                <div class="qr-item" th:each="qr, iterStat : ${qrCodes}">
+                    <img th:src="'data:image/png;base64,' + ${qr}"
+                         class="qr-image"
+                         th:alt="'QR Code ' + ${numbers[iterStat.index]}">
+                    <div class="qr-number"
+                         th:text="${numbers[iterStat.index]}">12</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mt-4">
+        <div class="col-lg-10">
+            <div class="alert alert-info">
+                <i class="bi bi-lightbulb"></i>
+                <strong>Совет:</strong>Количество колонок в предпросмотре адаптируется под размер экрана.
+            </div>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+<script>
+    function adaptGrid() {
+        const screenWidth = window.innerWidth;
+        const grid = document.querySelector('.qr-grid');
+        const currentCols = parseInt(getComputedStyle(grid).gridTemplateColumns.split(' ').length);
+
+        if (screenWidth < 768 && currentCols > 2) {
+            grid.style.gridTemplateColumns = 'repeat(2, 1fr)';
+        } else if (screenWidth < 992 && currentCols > 3) {
+            grid.style.gridTemplateColumns = 'repeat(3, 1fr)';
+        }
+    }
+
+    window.addEventListener('resize', adaptGrid);
+    document.addEventListener('DOMContentLoaded', adaptGrid);
+</script>
+</body>
+</html>
