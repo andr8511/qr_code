@@ -1,5 +1,5 @@
 #Maven
-FROM maven:3.9.9-amazoncorretto-17-al2023 AS build
+FROM maven:3.8.3-openjdk-17 AS build
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
